@@ -13,6 +13,7 @@
 > - 0.7Dt
 
 ## Versions
+- 0.2A - Math update(now to reg)
 - 0.1D - fixed MATH bug + fixed critical comment error
 - 0.1C - additional settings
 - 0.1B - create own vm settings!

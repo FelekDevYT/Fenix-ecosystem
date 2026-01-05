@@ -273,16 +273,12 @@ public class Interpreter {
     }
 
     private static void handleMath(List<Integer> bytecode, int opcode, Token arg1, Token arg2) {
-        if (arg1.getType() == TokenType.NUMBER) {//OPCODE VALUE, VALUE
-            bytecode.add(opcode);
-            bytecode.add(parseNumber(arg1.getLexeme()));
-            bytecode.add(parseNumber(arg2.getLexeme()));
-        } else if (arg2.getType() == TokenType.NUMBER){//OPCODE REG, VALUE
+        if (arg2.getType() == TokenType.NUMBER){//OPCODE REG, VALUE
             bytecode.add(opcode + 1);
             bytecode.add(getRegisterNumber(arg1));
             bytecode.add(parseNumber(arg2.getLexeme()));
         } else {//OPCODE REG, REG
-            bytecode.add(opcode + 2);
+            bytecode.add(opcode);
             bytecode.add(getRegisterNumber(arg1));
             bytecode.add(getRegisterNumber(arg2));
         }

@@ -80,65 +80,45 @@ public class FenixAssembler {
                  */
                 case 0x200://ADD REG, REG
                     int summ = RegisterUtils.getRegisterValue(opcodes[IP+1]) + RegisterUtils.getRegisterValue(opcodes[IP+2]);
-                    RegisterUtils.setRegisterValue(0x05, summ);//R5 - OUTPUT REGISTER
+                    RegisterUtils.setRegisterValue(opcodes[IP+1], summ);
                     IP += 3;
                     break;
                 case 0x201://ADD REG, VALUE
                     summ = RegisterUtils.getRegisterValue(opcodes[IP+1]) + opcodes[IP+2];
-                    RegisterUtils.setRegisterValue(0x05, summ);//R5 - OUTPUT REGISTER
-                    IP += 3;
-                    break;
-                case 0x202://ADD VALUE, VALUE
-                    summ = opcodes[IP+1] + opcodes[IP+2];
-                    RegisterUtils.setRegisterValue(0x05, summ);//R5 - OUTPUT REGISTER
+                    RegisterUtils.setRegisterValue(opcodes[IP+1], summ);
                     IP += 3;
                     break;
 
                 case 0x210://SUB REG, REG
                     int sub = RegisterUtils.getRegisterValue(opcodes[IP+1]) - RegisterUtils.getRegisterValue(opcodes[IP+2]);
-                    RegisterUtils.setRegisterValue(0x05, sub);//R5 - OUTPUT REGISTER
+                    RegisterUtils.setRegisterValue(opcodes[IP+1], sub);
                     IP += 3;
                     break;
                 case 0x211://SUB REG, VALUE
                     sub = RegisterUtils.getRegisterValue(opcodes[IP+1]) - opcodes[IP+2];
-                    RegisterUtils.setRegisterValue(0x05, sub);//R5 - OUTPUT REGISTER
-                    IP += 3;
-                    break;
-                case 0x212://SUB VALUE, VALUE
-                    sub = opcodes[IP+1] - opcodes[IP+2];
-                    RegisterUtils.setRegisterValue(0x05, sub);//R5 - OUTPUT REGISTER
+                    RegisterUtils.setRegisterValue(opcodes[IP+1], sub);
                     IP += 3;
                     break;
 
                 case 0x220://MUL REG, REG
                     int mul = RegisterUtils.getRegisterValue(opcodes[IP+1]) * RegisterUtils.getRegisterValue(opcodes[IP+2]);
-                    RegisterUtils.setRegisterValue(0x05, mul);//R5 - OUTPUT REGISTER
+                    RegisterUtils.setRegisterValue(opcodes[IP+1], mul);
                     IP += 3;
                     break;
                 case 0x221://MUL REG, VALUE
                     mul = RegisterUtils.getRegisterValue(opcodes[IP+1]) * opcodes[IP+2];
-                    RegisterUtils.setRegisterValue(0x05, mul);//R5 - OUTPUT REGISTER
-                    IP += 3;
-                    break;
-                case 0x222://MUL VALUE, VALUE
-                    mul = opcodes[IP+1] * opcodes[IP+2];
-                    RegisterUtils.setRegisterValue(0x05, mul);//R5 - OUTPUT REGISTER
+                    RegisterUtils.setRegisterValue(opcodes[IP+1], mul);
                     IP += 3;
                     break;
 
                 case 0x230://DIV REG, REG
                     int div = RegisterUtils.getRegisterValue(opcodes[IP+1]) / RegisterUtils.getRegisterValue(opcodes[IP+2]);
-                    RegisterUtils.setRegisterValue(0x05, div);//R5 - OUTPUT REGISTER
+                    RegisterUtils.setRegisterValue(opcodes[IP+1], div);
                     IP += 3;
                     break;
                 case 0x231://DIV REG, VALUE
                     div = RegisterUtils.getRegisterValue(opcodes[IP+1]) / opcodes[IP+2];
-                    RegisterUtils.setRegisterValue(0x05, div);//R5 - OUTPUT REGISTER
-                    IP += 3;
-                    break;
-                case 0x232://DIV VALUE, VALUE
-                    div = opcodes[IP+1] / opcodes[IP+2];
-                    RegisterUtils.setRegisterValue(0x05, div);//R5 - OUTPUT REGISTER
+                    RegisterUtils.setRegisterValue(opcodes[IP+1], div);
                     IP += 3;
                     break;
 
