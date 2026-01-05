@@ -1,0 +1,23 @@
+DB welcomeMessage, "Welcome in Fenix ECOSYSTEM!"
+LOAD r1, welcomeMessage
+
+call print_string
+
+LABEL hang:
+    JMP hang
+
+; R1 - string address
+; just println
+LABEL print_string:
+    push r6
+    push r1
+    push r7
+
+    mov r6, 1
+    mov r7, r1
+    int 0
+
+    pop r6
+    pop r1
+    pop r7
+    ret
