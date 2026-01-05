@@ -5,13 +5,14 @@ import me.felek.fenix.asm.ints.InterruptionManager;
 import me.felek.fenix.compiler.Interpreter;
 import me.felek.fenix.compiler.Lexer;
 import me.felek.fenix.compiler.Token;
+import me.felek.fenix.utils.PParser;
 
 import javax.swing.*;
-import java.io.IOException;
-import java.io.PrintStream;
+import java.io.*;
 import java.nio.IntBuffer;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 import static com.raylib.Colors.DARKGRAY;
@@ -25,7 +26,30 @@ public class VMMain {
     public static final int CONSOLE_COLUMNS = 80;
     public static final int CONSOLE_ROWS = 28;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
+        //STAGE 1 - preload
+        File settings = new File("vm/settings.properties");
+        String mainFile;
+        if (settings.exists()) {
+            mainFile = PParser.getString(settings.getPath(), "main");
+        } else {
+            //generate
+            new File("vm").mkdirs();
+            settings.createNewFile();
+
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter(Paths.get(settings.getPath()).toFile()))) {
+                bw.write("main=main.fnx");
+            }
+
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter(new File("main.fnx")))) {
+                bw.write("db hey, \"Hello, world!\"\n" +
+                        "mov r6, 1\n" +
+                        "load r7, hey\n" +
+                        "int 0");
+            }
+            mainFile = "main.fnx";
+        }
+
         InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "FenixVM - VM for Fenix ecosystem");
         SetTargetFPS(60);
 
@@ -46,7 +70,7 @@ public class VMMain {
 
         int[] bytecode = new int[0];
         try {
-            String sourceCode = Files.readString(Path.of("program.fnx"));
+            String sourceCode = Files.readString(Path.of(mainFile));
             List<Token> tokens = Lexer.tokenize(sourceCode);
             bytecode = Interpreter.compile(tokens);
 

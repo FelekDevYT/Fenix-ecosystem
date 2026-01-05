@@ -1,0 +1,4 @@
+db hey, "Hello, world!"
+mov r6, 1
+load r7, hey
+int 0
