@@ -30,8 +30,10 @@ public class VMMain {
         //STAGE 1 - preload
         File settings = new File("vm/settings.properties");
         String mainFile;
+        boolean doShowTokens = true;
         if (settings.exists()) {
             mainFile = PParser.getString(settings.getPath(), "main");
+            doShowTokens = Boolean.parseBoolean(PParser.getString(settings.getPath(), "doShowTokens"));
         } else {
             //generate
             new File("vm").mkdirs();
@@ -39,6 +41,7 @@ public class VMMain {
 
             try (BufferedWriter bw = new BufferedWriter(new FileWriter(Paths.get(settings.getPath()).toFile()))) {
                 bw.write("main=main.fnx");
+                bw.write("doShowTokens=true");
             }
 
             try (BufferedWriter bw = new BufferedWriter(new FileWriter(new File("main.fnx")))) {
@@ -72,6 +75,9 @@ public class VMMain {
         try {
             String sourceCode = Files.readString(Path.of(mainFile));
             List<Token> tokens = Lexer.tokenize(sourceCode);
+            if (doShowTokens) {
+                System.out.println(tokens);
+            }
             bytecode = Interpreter.compile(tokens);
 
             int[] finalBytecode = bytecode;
