@@ -19,7 +19,9 @@ public class Lexer {
             if (c == ';') {
                 while(c != '\n') {
                     i++;
-                    c = text.charAt(i);
+                    try {
+                        c = text.charAt(i);
+                    } catch (StringIndexOutOfBoundsException exc) {}//end of program
                 }
             }
 

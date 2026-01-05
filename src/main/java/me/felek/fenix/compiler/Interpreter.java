@@ -36,19 +36,19 @@ public class Interpreter {
                         i += 2;
                         break;
                     case "ADD":
-                        handleMath(bytecode, 200, toks.get(i+1), toks.get(i+2));
+                        handleMath(bytecode, 0x200, toks.get(i+1), toks.get(i+2));
                         i += 2;
                         break;
                     case "SUB":
-                        handleMath(bytecode, 210, toks.get(i+1), toks.get(i+2));
+                        handleMath(bytecode, 0x210, toks.get(i+1), toks.get(i+2));
                         i += 2;
                         break;
                     case "MUL":
-                        handleMath(bytecode, 220, toks.get(i+1), toks.get(i+2));
+                        handleMath(bytecode, 0x220, toks.get(i+1), toks.get(i+2));
                         i += 2;
                         break;
                     case "DIV":
-                        handleMath(bytecode, 230, toks.get(i+1), toks.get(i+2));
+                        handleMath(bytecode, 0x230, toks.get(i+1), toks.get(i+2));
                         i += 2;
                         break;
                     case "CMP":
