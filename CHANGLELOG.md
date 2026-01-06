@@ -13,6 +13,7 @@
 > - 0.7Dt
 
 ## Versions
+- 0.3A - Preprocessor
 - 0.2A - Math update(now to reg)
 - 0.1D - fixed MATH bug + fixed critical comment error
 - 0.1C - additional settings

@@ -4,6 +4,7 @@ import me.felek.fenix.asm.FenixAssembler;
 import me.felek.fenix.asm.ints.InterruptionManager;
 import me.felek.fenix.compiler.Interpreter;
 import me.felek.fenix.compiler.Lexer;
+import me.felek.fenix.compiler.Preprocessor;
 import me.felek.fenix.compiler.Token;
 import me.felek.fenix.utils.PParser;
 
@@ -73,7 +74,12 @@ public class VMMain {
 
         int[] bytecode = new int[0];
         try {
+            Preprocessor preprocessor = new Preprocessor();
+
             String sourceCode = Files.readString(Path.of(mainFile));
+
+            sourceCode = preprocessor.preprocess(sourceCode);
+
             List<Token> tokens = Lexer.tokenize(sourceCode);
             if (doShowTokens) {
                 System.out.println(tokens);
