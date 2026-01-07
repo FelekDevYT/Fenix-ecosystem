@@ -1,6 +1,8 @@
 package me.felek.fenix.VM;
 
 import me.felek.fenix.asm.registers.RegisterUtils;
+import me.felek.fenix.disk.Disk;
+import me.felek.fenix.disk.Sector;
 import me.felek.fenix.mem.MemoryBlock;
 
 import javax.swing.*;
@@ -17,7 +19,6 @@ public class InfoFrame {
         JTabbedPane pane = new JTabbedPane();
 
             JPanel registers = getRegistersPanel();
-
             JPanel memory = getMemoryPanel(memoryBlock);
 
         pane.addTab("Registers", registers);

@@ -4,6 +4,19 @@
     INT 0
 %endmacro
 
-DB welcome, "WELCOME!!!"
+MEMWRITE 0x15, 0x21
 
-println welcome
+; write to disk
+mov r6, 1
+mov r7, 0
+mov r8, 0
+mov r9, 0x15
+int 3
+
+; read from disk
+mov r6, 0
+mov r7, 0
+mov r8, 0
+int 3
+
+; print register

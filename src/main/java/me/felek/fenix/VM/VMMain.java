@@ -6,6 +6,7 @@ import me.felek.fenix.compiler.Interpreter;
 import me.felek.fenix.compiler.Lexer;
 import me.felek.fenix.compiler.Preprocessor;
 import me.felek.fenix.compiler.Token;
+import me.felek.fenix.disk.Disk;
 import me.felek.fenix.utils.PParser;
 
 import javax.swing.*;

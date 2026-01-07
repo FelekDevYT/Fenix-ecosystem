@@ -77,6 +77,26 @@ public class InterruptionManager {
                     System.exit(0);
                 }
                 break;
+            case 3://DISK MANAGER
+                //r6 - type (0) - read (1) - write
+                //r7 - SECTOR NUMBER
+                //r8 - address from sector to r/w
+                //r9 - address from RAM to WRITE
+                //R5 - OUTPUT(ONLY ONE BYTE)
+
+                int type = RegisterUtils.getRegisterValue(6);
+                int sector = RegisterUtils.getRegisterValue(7);
+                int sectorAddress = RegisterUtils.getRegisterValue(8);
+                int addressForWrite = RegisterUtils.getRegisterValue(9);
+
+                if (type == 0) {
+                    int read = vm.getCurrentDisk().read(sector, sectorAddress);
+
+                    RegisterUtils.setRegisterValue(5, read);
+                } else if (type == 1) {
+                    vm.getCurrentDisk().write(sector, sectorAddress, mem.get(addressForWrite));//sector, position, value
+                }
+                break;
         }
     }
 }

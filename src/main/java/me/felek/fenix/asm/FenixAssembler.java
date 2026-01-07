@@ -4,6 +4,7 @@ import me.felek.fenix.VM.VideoMode;
 import me.felek.fenix.asm.flags.Flags;
 import me.felek.fenix.asm.ints.InterruptionManager;
 import me.felek.fenix.asm.registers.RegisterUtils;
+import me.felek.fenix.disk.Disk;
 import me.felek.fenix.mem.MemoryBlock;
 import me.felek.fenix.utils.StackUtils;
 
@@ -17,11 +18,15 @@ public class FenixAssembler {
     private VideoMode videoMode = VideoMode.CONSOLE;
     private int[] opcodes;
 
+    private Disk currentDisk;
+
     private int IP = 0;
     private final int SP = 15;
 
     public FenixAssembler(int memSize) {
         memory = new MemoryBlock(memSize);
+
+        currentDisk = new Disk(65536);
     }
 //
 //    public void loadProgram(int[] bytecode) {
@@ -46,6 +51,10 @@ public class FenixAssembler {
 
     public MemoryBlock getMemory() {
         return memory;
+    }
+
+    public Disk getCurrentDisk() {
+        return currentDisk;
     }
 
     public void start(int[] bytecode) {
