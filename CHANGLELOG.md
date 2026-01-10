@@ -13,6 +13,7 @@
 > - 0.7Dt
 
 ## Versions
+- 0.4B - added simple documentation
 - 0.4A - DISK, SECTOR, DISK WRITE, DISK READ operations
 - 0.3A - Preprocessor
 - 0.2A - Math update(now to reg)
