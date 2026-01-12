@@ -1,0 +1,21 @@
+%macro println 1
+    LOAD R7, %1
+    MOV R6, 1
+    INT 0
+%endmacro
+
+db info, "Functions example"
+db text, "Inside someFunc function"
+db after, "After someFunc function"
+println info
+
+call someFunc
+println after
+
+;hang loop because we didn't need to call someFunc
+label hang:
+    jmp hang
+
+label someFunc:
+    println text
+    ret ;RET - function return!

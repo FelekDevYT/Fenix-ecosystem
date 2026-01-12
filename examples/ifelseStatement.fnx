@@ -1,0 +1,28 @@
+%macro println 1
+    LOAD R7, %1
+    MOV R6, 1
+    INT 0
+%endmacro
+
+db info, "Logical operators"
+db success, "Success!"
+db fail, "Another symbol!"
+println info
+
+int 1 ;let's read symbol
+
+cmp r5, 0x21 ;0x21 is '!' symbol
+
+je lbl
+jne fail
+
+; we didn't need to run lbl label!
+label hang:
+    jmp hang
+
+label lbl:
+    println success
+    jmp hang
+
+label fail:
+    println fail

@@ -1,0 +1,18 @@
+%macro println 1
+    LOAD R7, %1
+    MOV R6, 1
+    INT 0
+%endmacro
+
+db info, "Label example"
+db something, "something!"
+println info
+
+jmp doSmth ;jump to label
+
+label hang:
+    jmp hang
+
+label doSmth:
+    println something
+    jmp hang

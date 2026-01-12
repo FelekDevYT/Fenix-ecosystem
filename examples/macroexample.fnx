@@ -1,0 +1,9 @@
+%macro println 1
+    LOAD R7, %1
+    MOV R6, 1
+    INT 0
+%endmacro
+
+db info, "Macro example"
+
+println info

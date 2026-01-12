@@ -1,0 +1,13 @@
+%macro println 1
+    LOAD R7, %1
+    MOV R6, 1
+    INT 0
+%endmacro
+
+db info, "Simple input program"
+println info
+
+int 1 ;read
+mov r6, 2
+mov r7, r5 ;output from int 1
+int 0
