@@ -139,7 +139,7 @@ public class VMMain {
                     .height(20);
 
             if (GuiButton(infoButtonRec, "Info") == 1) {
-                new InfoFrame(fenixVM.getMemory());
+                new InfoFrame(fenixVM.getMemory(), fenixVM.getCurrentDisk());
             }
 
             Rectangle sourceRec = new Rectangle()

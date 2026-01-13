@@ -1,0 +1,18 @@
+; R0 - max number
+; R1 - calculated number
+
+MOV R0, 5
+MOV R1, 1
+
+LABEL loop_start
+    GT R0, 1
+    JD multiply
+    JMP finish
+
+LABEL multiply
+    MUL R1, R0
+    SUB R0, 1
+    JMP loop_start
+
+LABEL finish
+    jmp finish

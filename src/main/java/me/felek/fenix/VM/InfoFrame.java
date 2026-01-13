@@ -11,7 +11,7 @@ public class InfoFrame {
     private int WIDTH = 1280;
     private int HEIGHT = 720;
 
-    public InfoFrame(MemoryBlock memoryBlock) {
+    public InfoFrame(MemoryBlock memoryBlock, Disk d) {
         JFrame frame = new JFrame();
         frame.setTitle("FenixVM - INFO");
         frame.setSize(WIDTH, HEIGHT);
@@ -20,13 +20,55 @@ public class InfoFrame {
 
             JPanel registers = getRegistersPanel();
             JPanel memory = getMemoryPanel(memoryBlock);
+            JPanel disk = getDiskPanel(d);
 
         pane.addTab("Registers", registers);
         pane.addTab("Memory dump", memory);
+        pane.addTab("Disk", disk);
 
         frame.add(pane);
 
         frame.setVisible(true);
+    }
+
+    public JPanel getDiskPanel(Disk disk) {
+        JPanel diskPanel = new JPanel(null);
+
+        int totalBytes = disk.sectors.length * Sector.SIZE;
+        String[][] data = new String[totalBytes][5];
+
+        int row = 0;
+        for (int s = 0; s < disk.sectors.length; s++) {
+            Sector currentSector = disk.sectors[s];
+            int[] rawData = currentSector.getRaw();
+            for (int i = 0; i < Sector.SIZE; i++) {
+                int val = rawData[i];
+
+                data[row][0] = String.valueOf(s);
+                data[row][1] = String.valueOf(i);
+                data[row][2] = String.format("0x%02X", val);
+                data[row][3] = String.valueOf(val);
+
+                char c = (char) val;
+                data[row][4] = String.valueOf(c);
+
+                row++;
+            }
+        }
+
+        String[] columns = new String[]{"Sector", "Offset", "Hex", "Decimal", "Char"};
+
+        JTable table = new JTable(data, columns);
+        table.setCellSelectionEnabled(false);
+        table.getColumnModel().getColumn(0).setPreferredWidth(50);
+        table.getColumnModel().getColumn(1).setPreferredWidth(50);
+
+        JScrollPane sp = new JScrollPane(table);
+        sp.setBounds(0, 0, WIDTH - 30, HEIGHT - 70);
+
+        diskPanel.add(sp);
+
+        return diskPanel;
     }
 
     public JPanel getMemoryPanel(MemoryBlock memoryBlock) {

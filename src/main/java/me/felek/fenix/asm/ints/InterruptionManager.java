@@ -82,7 +82,6 @@ public class InterruptionManager {
                 //r7 - SECTOR NUMBER
                 //r8 - address from sector to r/w
                 //r9 - address from RAM to WRITE
-                //R5 - OUTPUT(ONLY ONE BYTE)
 
                 int type = RegisterUtils.getRegisterValue(6);
                 int sector = RegisterUtils.getRegisterValue(7);
