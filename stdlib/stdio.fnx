@@ -1,0 +1,47 @@
+; Fenix Standard Library
+; Name: StdIO
+; Author: FelekDevYT
+; Version: 0.1
+
+; print - prints from variable
+; args - R10 - address
+label print:
+    push r6
+    push r7
+
+    mov r7, r10
+    mov r6, 0
+    int 0
+
+    pop r7
+    pop r6
+    ret
+
+; println - prints from variable with newline
+; args - R10 - address
+label println:
+    push r6
+    push r7
+
+    mov r7, r10
+    mov r6, 1
+    int 0
+
+    pop r7
+    pop r6
+    ret
+
+; write - write symbol ar position
+; args - R10 - char, R11 - posX, R12 - posY
+label write:
+    push r6
+    push r7
+
+    mov r6, 3
+    mov r7, r10
+    mov r8, r11
+    mov r9, r12
+    int 0
+
+    pop r7
+    pop r6

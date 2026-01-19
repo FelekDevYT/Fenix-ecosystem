@@ -41,8 +41,15 @@ public class InterruptionManager {
 
         switch (code) {
             case 0:
-                //R6 - type (0) - print (1) - println (2) - one symbol print
+                //R6 - type (0) - print (1) - println (2) - one symbol print (3) - symbol on position
                 //R7 - address
+                //(3) only:
+                //R8 - posX
+                //R9 - posY
+                if (RegisterUtils.getRegisterValue(6) == 3) {
+                    vm.getTerminal().setCharAt(RegisterUtils.getRegisterValue(8), RegisterUtils.getRegisterValue(9), (char) RegisterUtils.getRegisterValue(7));
+                }
+
                 if (RegisterUtils.getRegisterValue(6) == 2) {
                     //r7 is just symbol char number xd
                     out.print((char) RegisterUtils.getRegisterValue(7));

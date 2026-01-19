@@ -47,6 +47,11 @@ public class Terminal extends OutputStream {
         }
     }
 
+    public void setCharAt(int x, int y, char ch) {
+        screenBuffer[x][y] = new TerminalCharacter();
+        screenBuffer[x][y].character = ch;
+    }
+
     public void calculateSize(int screenWidthPx, int screenHeightPx) {
         if (rows <= 0 || columns <= 0) return;
         this.charCellHeight = screenHeightPx / rows;

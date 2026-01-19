@@ -1,0 +1,40 @@
+; Fenix Standard Library
+; Name: StdMem
+; Author: FelekDevYT
+; Version: 0.1
+
+; memwrite - write number to memory
+; args - R10 - address, R11 - number
+label memory_write:
+    push r12
+
+    memwrite r10, r11
+
+    pop r12
+    ret
+
+; memread - read number from memory address
+; args - R10 - address
+; output 0 R5
+label
+
+; findFirstFreeVarSpace - find first free space for variable
+; args - nothing
+; used - R3(counter)
+; output - R5 - address
+label findFirstFreeVarSpace:
+    push r3
+    push r4
+
+    mov r3, 0
+    label fffvs_loop:
+        add r3, 1
+        deref r4, r3
+        cmp r4, 0
+        jne fffvs_loop
+    add r3, 1
+
+    mov r5, r3
+    pop r4
+    pop r3
+    ret

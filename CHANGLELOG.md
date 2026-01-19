@@ -13,6 +13,8 @@
 > - 0.7Dt
 
 ## Versions
+- 0.5A - (3) type in int 0x00 operation, #include directive, stdlib base
+- 0.4C - disk debug
 - 0.4B - added simple documentation
 - 0.4A - DISK, SECTOR, DISK WRITE, DISK READ operations
 - 0.3A - Preprocessor

@@ -1,5 +1,6 @@
 package me.felek.fenix.asm;
 
+import me.felek.fenix.VM.Terminal;
 import me.felek.fenix.VM.VideoMode;
 import me.felek.fenix.asm.flags.Flags;
 import me.felek.fenix.asm.ints.InterruptionManager;
@@ -15,7 +16,7 @@ public class FenixAssembler {
     public Map<Integer, Integer> labels = new HashMap<>();
     private InterruptionManager im;
     private MemoryBlock memory;
-    private VideoMode videoMode = VideoMode.CONSOLE;
+    private Terminal terminal;
     private int[] opcodes;
 
     private Disk currentDisk;
@@ -23,8 +24,9 @@ public class FenixAssembler {
     private int IP = 0;
     private final int SP = 15;
 
-    public FenixAssembler(int memSize) {
+    public FenixAssembler(int memSize, Terminal terminal) {
         memory = new MemoryBlock(memSize);
+        this.terminal = terminal;
 
         currentDisk = new Disk(65536);
     }
@@ -55,6 +57,10 @@ public class FenixAssembler {
 
     public Disk getCurrentDisk() {
         return currentDisk;
+    }
+
+    public Terminal getTerminal() {
+        return terminal;
     }
 
     public void start(int[] bytecode) {
@@ -244,8 +250,20 @@ public class FenixAssembler {
                     memory.set(opcodes[IP+1], opcodes[IP+2]);
                     IP += 3;
                     break;
+                case 0x53://STORE REG, REG
+                    memory.set(RegisterUtils.getRegisterValue(opcodes[IP+1]), RegisterUtils.getRegisterValue(opcodes[IP+2]));
+                    IP += 3;
+                    break;
+                case 0x54://STORE REG, VALUE
+                    memory.set(RegisterUtils.getRegisterValue(opcodes[IP+1]), opcodes[IP+2]);
+                    IP += 3;
+                    break;
                 case 0x52://LOAD REG, ADDR
                     RegisterUtils.setRegisterValue(opcodes[IP+1], memory.get(opcodes[IP+2]));
+                    IP += 3;
+                    break;
+                case 0x55:
+                    RegisterUtils.setRegisterValue(opcodes[IP + 1], memory.get(RegisterUtils.getRegisterValue(opcodes[IP + 2])));
                     IP += 3;
                     break;
                     /*

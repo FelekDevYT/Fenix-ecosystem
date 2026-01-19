@@ -67,7 +67,7 @@ public class VMMain {
         RenderTexture terminalTexture = LoadRenderTexture((int)terminalArea.width(), (int)terminalArea.height());
         PrintStream terminalOut = new PrintStream(terminal);
 
-        FenixAssembler fenixVM = new FenixAssembler(65536);
+        FenixAssembler fenixVM = new FenixAssembler(65536, terminal);
         InterruptionManager im = new InterruptionManager(fenixVM, terminalOut);
         fenixVM.registerInterruptionManager(im);
 

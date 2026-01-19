@@ -1,35 +1,12 @@
-%macro println 1
-    LOAD R7, %1
-    MOV R6, 1
-    INT 0
-%endmacro
+%include "stdlib/stdio.fnx"
+%include "stdlib/stdmem.fnx"
 
-db info, "Type something!"
-db newline, "\n"
-println info
+db var, "Hello, world using fenixstdlib!"
 
-int 1
-mov r7, r5
-mov r6, 2
-int 0
+mov r10, var
+call println
 
-println newline
+call findFirstFreeVarSpace
 
-memwrite 0x50, r5
-
-; disk operations
-mov r6, 1
-mov r7, 1
-mov r8, 0
-mov r9, 0x50
-int 3
-
-; read from disk
-mov r6, 0
-mov r7, 1
-mov r8, 0
-int 3
-
-mov r7, r5
-mov r6, 2
-int 0
+label hang:
+    jmp hang

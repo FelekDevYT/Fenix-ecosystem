@@ -1,6 +1,9 @@
 package me.felek.fenix.compiler;
 
 import javax.crypto.Mac;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,6 +22,7 @@ public class Preprocessor {
     public String preprocess(String text) {
         StringBuilder code = new StringBuilder();
         String[] lines = text.split("\n");
+        List<String> filesToInclude = new ArrayList<>();
 
         boolean isMacroDefines = false;
         Macros current = null;
@@ -58,6 +62,15 @@ public class Preprocessor {
                 continue;
             }
 
+            if (trimmed.toUpperCase().startsWith("%INCLUDE")) {
+                String[] parts = trimmed.split("\\s+", 2);
+                if (parts.length == 2) {
+                    String filePath = parts[1].replaceAll("\"", "");
+                    filesToInclude.add(filePath);
+                }
+                continue;
+            }
+
             String[] parts = trimmed.split("\\s+", 2);
             String command = parts[0].toUpperCase();
             if (macros.containsKey(command)) {
@@ -81,10 +94,24 @@ public class Preprocessor {
             for (Map.Entry<String, String> entry : defines.entrySet()) {
                 processedLine = processedLine.replaceAll("\\b" + entry.getKey() + "\\b", entry.getValue());
             }
-
             code.append(processedLine).append("\n");
         }
+        for (String path : filesToInclude) {
+            String fileContent = readFileContent(path);
+            code.append("\n; --- Included from file: ").append(path).append(" ---\n");
+            code.append(fileContent).append("\n");
+        }
+
+        System.out.println(code.toString());
 
         return code.toString();
+    }
+
+    private String readFileContent(String path) {
+        try {
+            return new String(Files.readAllBytes(Paths.get(path)));
+        } catch (IOException e) {
+            return "; ERROR: Could not include file '" + path + "'. Reason: " + e.getMessage();
+        }
     }
 }

@@ -1,5 +1,6 @@
 package me.felek.fenix.compiler;
 
+import me.felek.fenix.asm.registers.RegisterUtils;
 import me.felek.fenix.utils.Exit;
 
 import java.util.*;
@@ -28,7 +29,20 @@ public class Interpreter {
                             bytecode.add(0x10);
                             bytecode.add(getRegisterNumber(arg1));
                             bytecode.add(parseNumber(arg2.getLexeme()));
-                        } else {//MOV REG, REG
+                        } else if (arg2.getType() == TokenType.OPERATION) {//MOV REG, LABEL
+                            arg1 = toks.get(i+1);
+                            arg2 = toks.get(i+2);
+
+                            Integer variableAddress = vars.get(arg2.getLexeme());
+                            if (variableAddress == null) {
+                                System.err.println("Undefined variable " + arg2.getLexeme());
+                                Exit.UNDEFINED_VARIABLE.exit();
+                            }
+
+                            bytecode.add(0x10);
+                            bytecode.add(getRegisterNumber(arg1));
+                            bytecode.add(variableAddress);
+                        }else {//MOV REG, REG
                             bytecode.add(0x11);
                             bytecode.add(getRegisterNumber(arg1));
                             bytecode.add(getRegisterNumber(arg2));
@@ -153,20 +167,39 @@ public class Interpreter {
                             bytecode.add(0);
                         }
                         vars.put(arg1.getLexeme(), prev+1);
+                        i += 2;
                         break;
                     case "MEMWRITE":
                         arg1 = toks.get(i+1);
                         arg2 = toks.get(i+2);
 
-                        if (arg2.getType() == TokenType.NUMBER) {
+                        //VALUE, VALUE
+                        if (arg1.getType() == TokenType.NUMBER && arg2.getType() == TokenType.NUMBER) {
                             bytecode.add(0x51);
                             bytecode.add(parseNumber(arg1.getLexeme()));
                             bytecode.add(parseNumber(arg2.getLexeme()));
-                        } else {
+                        } else if (arg1.getType() == TokenType.REGISTER && arg2.getType() == TokenType.REGISTER) {
+                            bytecode.add(0x53);
+                            bytecode.add(getRegisterNumber(arg1));
+                            bytecode.add(getRegisterNumber(arg2));
+                        } else if (arg1.getType() == TokenType.REGISTER && arg2.getType() == TokenType.NUMBER) {
+                            bytecode.add(0x54);
+                            bytecode.add(getRegisterNumber(arg1));
+                            bytecode.add(parseNumber(arg2.getLexeme()));
+                        } else if (arg1.getType() == TokenType.NUMBER && arg2.getType() == TokenType.REGISTER) {
                             bytecode.add(0x50);
                             bytecode.add(parseNumber(arg1.getLexeme()));
                             bytecode.add(getRegisterNumber(arg2));
                         }
+
+                        i += 2;
+                        break;
+                    case "DEREF":
+                        arg1 = toks.get(i + 1);
+                        arg2 = toks.get(i + 2);
+                        bytecode.add(0x55);
+                        bytecode.add(getRegisterNumber(arg1));
+                        bytecode.add(getRegisterNumber(arg2));
                         i += 2;
                         break;
                     case "LOAD"://LOAD R5, varname
