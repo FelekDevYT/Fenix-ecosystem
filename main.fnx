@@ -1,12 +1,8 @@
-%include "stdlib/stdio.fnx"
 %include "stdlib/stdmem.fnx"
 
-db var, "Hello, world using fenixstdlib!"
+mov r10, 0x22
 
-mov r10, var
-call println
-
-call findFirstFreeVarSpace
+call forceWriteNumber
 
 label hang:
     jmp hang

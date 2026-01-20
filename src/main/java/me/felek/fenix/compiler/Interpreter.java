@@ -232,8 +232,14 @@ public class Interpreter {
                         i += 1;
                         break;
                     case "PUSH"://push value
-                        bytecode.add(0x70);
-                        bytecode.add(parseNumber(toks.get(i+1).getLexeme()));
+                        arg = toks.get(i+1);
+                        if (arg.getType() == TokenType.REGISTER) {
+                            bytecode.add(0x72);
+                            bytecode.add(getRegisterNumber(arg));
+                        } else {
+                            bytecode.add(0x70);
+                            bytecode.add(parseNumber(arg.getLexeme()));
+                        }
                         i += 1;
                         break;
                     case "POP"://POP R0

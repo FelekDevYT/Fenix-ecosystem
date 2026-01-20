@@ -1,0 +1,42 @@
+; Fenix Standard Library
+; Name: StdDisk
+; Author: FelekDevYT
+; Version: 0.1
+
+; read - read from sector and position
+; args - R10 - sector number, R11 - position in sector
+; output - R5 - number
+label read:
+    push r6
+    push r7
+    push r8
+
+    mov r6, 0
+    mov r7, r10
+    mov r8, r11
+    int 3
+
+    pop r8
+    pop r7
+    pop r6
+    ret
+
+; write - write to position in sector some info
+; args - R10 - sector number, R11 - position in sector, R12 - number for write
+label write:
+    push r6
+    push r7
+    push r8
+    push r9
+
+    mov r6, 1
+    mov r7, r10
+    mov r8, r11
+    mov r9, r12
+    int 3
+
+    pop r9
+    pop r8
+    pop r7
+    pop r6
+    ret

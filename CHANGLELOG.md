@@ -13,6 +13,7 @@
 > - 0.7Dt
 
 ## Versions
+- 0.5B - fexes, PUSH&POP REG operation, stddisk, added some tests, optimized stdmem::memory_write
 - 0.5A - (3) type in int 0x00 operation, #include directive, stdlib base
 - 0.4C - disk debug
 - 0.4B - added simple documentation

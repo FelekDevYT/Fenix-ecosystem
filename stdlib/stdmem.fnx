@@ -6,17 +6,9 @@
 ; memwrite - write number to memory
 ; args - R10 - address, R11 - number
 label memory_write:
-    push r12
-
     memwrite r10, r11
 
-    pop r12
     ret
-
-; memread - read number from memory address
-; args - R10 - address
-; output 0 R5
-label
 
 ; findFirstFreeVarSpace - find first free space for variable
 ; args - nothing
@@ -37,4 +29,28 @@ label findFirstFreeVarSpace:
     mov r5, r3
     pop r4
     pop r3
+    ret
+
+; forceWriteNumber - forced writing a number to a place
+; args - R10 - number
+; uses - R3 - temp variable
+; WIP STATUS!!!
+label forceWriteNumber:
+    push r5
+    push r3
+    push r11
+
+    mov r3, r10
+
+    call findFirstFreeVarSpace
+
+    mov r10, r5
+    mov r11, r3
+    call memory_write
+
+    mov r10, r3
+
+    pop r11
+    pop r3
+    pop r5
     ret

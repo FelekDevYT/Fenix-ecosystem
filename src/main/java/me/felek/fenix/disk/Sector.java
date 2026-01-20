@@ -2,6 +2,8 @@ package me.felek.fenix.disk;
 
 import me.felek.fenix.utils.Exit;
 
+import java.util.Arrays;
+
 public class Sector {
     public static final int SIZE = 512;
 

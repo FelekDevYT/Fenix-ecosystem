@@ -7,6 +7,7 @@ import me.felek.fenix.asm.ints.InterruptionManager;
 import me.felek.fenix.asm.registers.RegisterUtils;
 import me.felek.fenix.disk.Disk;
 import me.felek.fenix.mem.MemoryBlock;
+import me.felek.fenix.utils.Exit;
 import me.felek.fenix.utils.StackUtils;
 
 import java.util.HashMap;
@@ -194,39 +195,39 @@ public class FenixAssembler {
                     IP += 2;
                     break;//just skip
                 case 0x41://JMP LABELNAME(ID)
-                    IP = labels.get(opcodes[IP+1]);
+                    IP = getLabel(opcodes[IP+1]);
                     break;
                 case 0x42://JE
                     if (Flags.EQ.isEnabled) {
-                        IP = labels.get(opcodes[IP+1]);
+                        IP = getLabel(opcodes[IP+1]);
                     } else {
                         IP += 2;
                     }
                     break;
                 case 0x43://GT
                     if (Flags.GT.isEnabled) {
-                        IP = labels.get(opcodes[IP+1]);
+                        IP = getLabel(opcodes[IP+1]);
                     } else {
                         IP += 2;
                     }
                     break;
                 case 0x44://LT
                     if (Flags.LT.isEnabled) {
-                        IP = labels.get(opcodes[IP+1]);
+                        IP = getLabel(opcodes[IP+1]);
                     } else {
                         IP += 2;
                     }
                     break;
                 case 0x45://JZ
                     if (Flags.ZERO.isEnabled) {
-                        IP = labels.get(opcodes[IP+1]);
+                        IP = getLabel(opcodes[IP+1]);
                     } else {
                         IP += 2;
                     }
                     break;
                 case 0x46://JNE
                     if (!Flags.EQ.isEnabled) {
-                        IP = labels.get(opcodes[IP+1]);
+                        IP = getLabel(opcodes[IP+1]);
                     } else {
                         IP += 2;
                     }
@@ -234,7 +235,7 @@ public class FenixAssembler {
                 case 0x47://CALL labelName
                     int returnAddress = IP + 2;//next operation
                     StackUtils.push(memory, returnAddress);
-                    IP = labels.get(opcodes[IP+1]);
+                    IP = getLabel(opcodes[IP+1]);
                     break;
                 case 0x48://RET
                     IP = StackUtils.pop(memory);
@@ -292,6 +293,10 @@ public class FenixAssembler {
                     RegisterUtils.setRegisterValue(reg, StackUtils.pop(memory));
                     IP += 2;
                     break;
+                case 0x72://PUSH REG
+                    StackUtils.push(memory, RegisterUtils.getRegisterValue(opcodes[IP+1]));
+                    IP += 2;
+                    break;
 
                 default:
                     IP++;
@@ -299,5 +304,14 @@ public class FenixAssembler {
             }
         }
         System.out.println("VM Thread Finished.");
+    }
+
+    public int getLabel(int lblID) {
+        if (!labels.containsKey(lblID)) {
+            System.err.println("Label " + lblID + " does not exists");
+            Exit.LABEL_DOES_NOT_EXISTS.exit();
+        }
+        
+        return labels.get(lblID);
     }
 }
